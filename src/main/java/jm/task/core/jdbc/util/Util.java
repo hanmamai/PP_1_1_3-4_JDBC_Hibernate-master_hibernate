@@ -1,5 +1,7 @@
 package jm.task.core.jdbc.util;
 
+import org.hibernate.cfg.Configuration;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -14,7 +16,6 @@ public class Util {
 
         Connection connection = null;
         try {
-
             Class.forName(BD_DRIVER);
             connection = DriverManager.getConnection(BD_URL, BD_LOGIN, BD_PASSWORD);
             connection.setAutoCommit(false);
@@ -23,5 +24,17 @@ public class Util {
             throw new RuntimeException(e);
 
         }
+    }
+
+    public static Configuration getConfiguration() {
+        return new Configuration()
+                .setProperty("hibernate.driver_class", BD_DRIVER)
+                .setProperty("hibernate.connection.url", BD_URL)
+                .setProperty("hibernate.connection.username", BD_LOGIN)
+                .setProperty("hibernate.connection.password", BD_PASSWORD)
+                .setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL8Dialect")
+                .setProperty("hibernate.show_sql", "true")
+                .setProperty("hibernate.current_session_context_class", "thread");
+
     }
 }
