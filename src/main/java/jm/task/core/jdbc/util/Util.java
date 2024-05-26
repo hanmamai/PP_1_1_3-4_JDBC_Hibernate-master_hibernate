@@ -1,5 +1,8 @@
 package jm.task.core.jdbc.util;
 
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
 import java.sql.Connection;
@@ -25,6 +28,7 @@ public class Util {
 
         }
     }
+    private static SessionFactory sessionFactory = null;
 
     public static Configuration getConfiguration() {
         return new Configuration()
@@ -36,5 +40,11 @@ public class Util {
                 .setProperty("hibernate.show_sql", "true")
                 .setProperty("hibernate.current_session_context_class", "thread");
 
+    }
+    public static Session getSession() throws HibernateException{
+        return sessionFactory.openSession();
+    }
+    public static void close() throws HibernateException {
+        getSession().close();
     }
 }
